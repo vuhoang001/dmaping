@@ -6,3 +6,6 @@
 *.iml
 out
 gen
+.gitignore
+appsettings.json
+appsettings.Development.json
