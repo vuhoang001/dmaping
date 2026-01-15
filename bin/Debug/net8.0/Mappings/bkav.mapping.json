@@ -1,0 +1,32 @@
+{
+  "CmdType": 1,
+  "CommandObject": {
+    "PartnerInvoiceID": "{{ InvoiceNo }}",
+    "PartnerInvoiceStringID": "INV-{{ InvoiceNo }}",
+
+    "Invoice": {
+      "InvoiceTypeID": 1,
+      "InvoiceDate": "{{ InvoiceDate }}",
+      "BuyerName": "{{ Buyer.Name }}",
+      "BuyerTaxCode": "{{ Buyer.TaxCode }}",
+      "CurrencyID": "VND",
+      "ExchangeRate": 1,
+      "InvoiceForm": "1-C26TAA",
+      "InvoiceSerial": "C26TAA",
+      "InvoiceNo": 0
+    },
+
+    "Items": [
+      {
+        "$source": "Items",
+        "ItemName": "{{ Name }}",
+        "Qty": "{{ Qty }}",
+        "Price": "{{ Price }}",
+        "Amount": "{{ Qty * Price }}",
+        "TaxRate": 10,
+        "TaxAmount": "{{ Qty * Price * 0.1 }}",
+        "ItemTypeID": 1
+      }
+    ]
+  }
+}

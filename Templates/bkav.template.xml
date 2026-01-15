@@ -1,0 +1,33 @@
+<Bkav>
+    <CmdType>{{ CmdType }}</CmdType>
+
+    <CommandObject>
+        <Invoice>
+            <InvoiceTypeID>{{ CommandObject.Invoice.InvoiceTypeID }}</InvoiceTypeID>
+            <InvoiceDate>{{ CommandObject.Invoice.InvoiceDate }}</InvoiceDate>
+            <BuyerName>{{ CommandObject.Invoice.BuyerName }}</BuyerName>
+            <BuyerTaxCode>{{ CommandObject.Invoice.BuyerTaxCode }}</BuyerTaxCode>
+            <CurrencyID>{{ CommandObject.Invoice.CurrencyID }}</CurrencyID>
+            <ExchangeRate>{{ CommandObject.Invoice.ExchangeRate }}</ExchangeRate>
+            <InvoiceForm>{{ CommandObject.Invoice.InvoiceForm }}</InvoiceForm>
+            <InvoiceSerial>{{ CommandObject.Invoice.InvoiceSerial }}</InvoiceSerial>
+            <InvoiceNo>{{ CommandObject.Invoice.InvoiceNo }}</InvoiceNo>
+        </Invoice>
+
+        <ListInvoiceDetailsWS>
+            {{ for item in CommandObject.Items }}
+            <InvoiceDetailsWS>
+                <ItemName>{{ item.ItemName }}</ItemName>
+                <Qty>{{ item.Qty }}</Qty>
+                <Price>{{ item.Price }}</Price>
+                <Amount>{{ item.Amount }}</Amount>
+                <TaxRate>{{ item.TaxRate }}</TaxRate>
+                <TaxAmount>{{ item.TaxAmount }}</TaxAmount>
+            </InvoiceDetailsWS>
+            {{ end }}
+        </ListInvoiceDetailsWS>
+
+        <PartnerInvoiceID>{{ CommandObject.PartnerInvoiceID }}</PartnerInvoiceID>
+        <PartnerInvoiceStringID>{{ CommandObject.PartnerInvoiceStringID }}</PartnerInvoiceStringID>
+    </CommandObject>
+</Bkav>
