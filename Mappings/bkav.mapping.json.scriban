@@ -3,7 +3,6 @@
   "CommandObject": {
     "PartnerInvoiceID": "{{ InvoiceNo }}",
     "PartnerInvoiceStringID": "INV-{{ InvoiceNo }}",
-
     "Invoice": {
       "InvoiceTypeID": 1,
       "InvoiceDate": "{{ InvoiceDate }}",
@@ -15,18 +14,18 @@
       "InvoiceSerial": "C26TAA",
       "InvoiceNo": 0
     },
-
     "Items": [
+      {{~ for item in Items ~}}
       {
-        "$source": "Items",
-        "ItemName": "{{ Name }}",
-        "Qty": "{{ Qty }}",
-        "Price": "{{ Price }}",
-        "Amount": "{{ Qty * Price }}",
-        "TaxRate": 10,
-        "TaxAmount": "{{ Qty * Price * 0.1 }}",
-        "ItemTypeID": 1
-      }
+        "ItemName": "{{ item.Name }}",
+        "Qty": {{ item.Qty }},
+      "Price": {{ item.Price }},
+      "Amount": {{ item.Qty * item.Price }},
+      "TaxRate": 10,
+      "TaxAmount": {{ item.Qty * item.Price * 0.1 }},
+      "ItemTypeID": 1
+      }{{ if !for.last }},{{ end }}
+      {{~ end ~}}
     ]
   }
 }

@@ -1,0 +1,6 @@
+namespace InvoiceHub.Mappings;
+
+public class vnpt_adjust_mapping_json_scriban
+{
+    
+}
