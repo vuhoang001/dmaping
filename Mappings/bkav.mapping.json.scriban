@@ -1,31 +1,135 @@
 {
-  "CmdType": 1,
-  "CommandObject": {
-    "PartnerInvoiceID": "{{ InvoiceNo }}",
-    "PartnerInvoiceStringID": "INV-{{ InvoiceNo }}",
-    "Invoice": {
-      "InvoiceTypeID": 1,
-      "InvoiceDate": "{{ InvoiceDate }}",
-      "BuyerName": "{{ Buyer.Name }}",
-      "BuyerTaxCode": "{{ Buyer.TaxCode }}",
-      "CurrencyID": "VND",
-      "ExchangeRate": 1,
-      "InvoiceForm": "1-C26TAA",
-      "InvoiceSerial": "C26TAA",
-      "InvoiceNo": 0
-    },
-    "Items": [
-      {{~ for item in Items ~}}
-      {
-        "ItemName": "{{ item.Name }}",
-        "Qty": {{ item.Qty }},
-      "Price": {{ item.Price }},
-      "Amount": {{ item.Qty * item.Price }},
-      "TaxRate": 10,
-      "TaxAmount": {{ item.Qty * item.Price * 0.1 }},
-      "ItemTypeID": 1
-      }{{ if !for.last }},{{ end }}
-      {{~ end ~}}
-    ]
-  }
+  "CmdType": {{ if cmdType == null }}100{{else}}{{cmdType}}{{end}},
+  "CommandObject": [
+    {
+      "Invoice": {
+        "InvoiceTypeID": 1,
+        "InvoiceDate": "{{ invoiceDate }}",
+
+        "BuyerName": "{{ buyer.name }}",
+
+        "BuyerTaxCode":
+          {{ if buyer.taxCode == null }}
+            ""
+          {{ else }}
+            "{{ buyer.taxCode }}"
+          {{ end }},
+
+        "BuyerUnitName": "{{ buyer.unitName }}",
+        "BuyerAddress": "{{ buyer.address }}",
+        "BuyerBankAccount": "{{ buyer.bankAccount }}",
+
+        "PayMethodID":
+          {{ if payment.method == null || payment.method == "" }}
+            1
+          {{ else }}
+            {{ payment.method }}
+          {{ end }},
+
+        "ReceiveTypeID":
+          {{ if receiver.type == null }}
+            1
+          {{ else }}
+            {{ receiver.type }}
+          {{ end }},
+
+        "ReceiverEmail":
+          {{ if receiver.email == null }}
+            ""
+          {{ else }}
+            "{{ receiver.email }}"
+          {{ end }},
+
+        "ReceiverMobile":
+          {{ if receiver.phone == null }}
+            ""
+          {{ else }}
+            "{{ receiver.phone }}"
+          {{ end }},
+
+        "ReceiverAddress": "{{ receiver.address }}",
+        "ReceiverName": "{{ receiver.name }}",
+
+        "Note": "{{ notes }}",
+        "BillCode": "",
+
+        "CurrencyID": "VND",
+        "ExchangeRate": 1.0,
+
+        "InvoiceForm": "1",
+        "InvoiceSerial": "C26TAA",
+        "InvoiceNo": {{ if refKey == null }} null {{else}}0{{end}},
+
+        "MaCuaCQT": null,
+        "UserDefine": null,
+        "IsBTH": true,
+
+        "CCCD": "{{ buyer.cccd }}",
+        "PassportNumber": null,
+        "FiscalCodes": null,
+        "OriginalInvoiceIdentify": "[1]_[C26TAA]_[{{ refKey }}]"
+      },
+
+      "ListInvoiceDetailsWS": [
+        {{~ for item in items ~}}
+        {
+          "ItemName": "{{ item.name }}",
+          "UnitName": "{{ item.unit }}",
+
+          "Qty": {{ item.qty }},
+          "Price": {{ item.price }},
+
+          "Amount":
+            {{ if item.amount == null }}
+              {{ item.price * item.qty }}
+            {{ else }}
+              {{ item.amount }}
+            {{ end }},
+
+          "TaxRate":
+            {{ if item.vatRate == null }}
+              0
+            {{ else }}
+              {{ item.vatRate }}
+            {{ end }},
+
+          "TaxAmount":
+            {{ if item.vatAmount == null }}
+              0
+            {{ else }}
+              {{ item.vatAmount }}
+            {{ end }},
+
+          "OtherAmount": 0,
+
+          "DiscountRate": 0,
+          "DiscountAmount":
+            {{ if discountAmount == null }}
+              0
+            {{ else }}
+              {{ discountAmount }}
+            {{ end }},
+
+          "IsDiscount":
+            {{ if discountAmount != null && discountAmount > 0 }}
+              true
+            {{ else }}
+              false
+            {{ end }},
+
+          "UserDefineDetails": null,
+          "ItemTypeID": 0,
+          "SpecialtyItems": null
+        }{{ if !for.last }},{{ end }}
+        {{~ end ~}}
+      ],
+
+      "ListInvoiceAttachFileWs": [],
+      "AttachListNumber": null,
+      "AttachListDate": null,
+
+      "PartnerInvoiceID": {{key}},
+      "PartnerInvoiceStringID": null
+    }
+  ]
 }

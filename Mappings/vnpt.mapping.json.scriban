@@ -1,18 +1,146 @@
 {
-  "Invoice": {
-    "InvoiceNo": "{{ Data.InvoiceNo }}",
-    "InvoiceDate": "{{ Data.InvoiceDate }}",
-    "BuyerName": "{{ Data.Buyer.Name }}",
-    "BuyerTaxCode": "{{ Data.Buyer.TaxCode }}",
-    "TotalAmount": "{{ sum(Data.Items, 'Qty * Price') }}"
-  },
+  "Inv": {
+    "key": "{{ key }}",
+    "Invoice": {
+      "CusCode": "{{ buyer.code }}",
+      "CusName": "{{ buyer.name }}",
+      "CusAddress": "{{ buyer.address }}",
+      "CusPhone": "{{ buyer.phone }}",
 
-  "Products": [
-    {
-      "$source": "Data.Items",
-      "ProductName": "{{ Name }}",
-      "Quantity": "{{ Qty }}",
-      "UnitPrice": "{{ Price }}"
+      "CusTaxCode":
+        {{ if buyer.taxCode == null }}
+          null
+        {{ else }}
+          "{{ buyer.taxCode }}"
+        {{ end }},
+
+      "PaymentMethod":
+        {{ if payment.method == null }}
+          "TM"
+        {{ else }}
+          "{{ payment.method }}"
+        {{ end }},
+
+      "KindOfService":
+        {{ if kindOfService == null }}
+          1
+        {{ else }}
+          {{ kindOfService }}
+        {{ end }},
+
+      "Products": {
+        "Product": [
+        {{~ for item in items ~}}
+          {
+            "Code": "{{ item.code }}",
+            "ProdName": "{{ item.name }}",
+            "ProdUnit": "{{ item.unit }}",
+            "ProdQuantity": {{ item.qty }},
+            "ProdPrice": {{ item.price }},
+
+            "Total":
+              {{ if item.total == null }}
+                {{ item.price * item.qty}}
+              {{ else }}
+                {{ item.total }}
+              {{ end }},
+
+            "VATAmount":
+              {{ if item.vatAmount == null }}
+                0
+              {{ else }}
+                {{ item.vatAmount }}
+              {{ end }},
+
+            "Amount":
+              {{ if item.amount == null }}
+                0
+              {{ else }}
+                {{ item.amount }}
+              {{ end }},
+
+            "VATRate":
+              {{ if item.vatRate == null }}
+                0
+              {{ else }}
+                {{ item.vatRate }}
+              {{ end }},
+
+            "Remark": "{{ item.remark }}",
+
+            "IsSum":
+              {{ if item.isSum == null }}
+                0
+              {{ else }}
+                {{ item.isSum }}
+              {{ end }},
+
+            "LHHDTrung":
+              {{ if item.lhhdTrung == null }}
+                3
+              {{ else }}
+                {{ item.lhhdTrung }}
+              {{ end }}
+          }{{ if !for.last }},{{ end }}
+        {{~ end ~}}
+        ]
+      },
+
+      "Total":
+        {{ if total == null }}
+          0
+        {{ else }}
+          {{ total }}
+        {{ end }},
+
+      "DiscountAmount":
+        {{ if discountAmount == null }}
+          0
+        {{ else }}
+          {{ discountAmount }}
+        {{ end }},
+
+      "VATRate":
+        {{ if vatRate == null }}
+          0
+        {{ else }}
+          {{ vatRate }}
+        {{ end }},
+
+      "VATAmount":
+        {{ if vatAmount == null }}
+          0
+        {{ else }}
+          {{ vatAmount }}
+        {{ end }},
+
+      "Amount":
+        {{ if amount == null }}
+          0
+        {{ else }}
+          {{ amount }}
+        {{ end }},
+
+      "AmountInWords":
+        {{ if amountInWords == null }}
+          null
+        {{ else }}
+          "{{ amountInWords }}"
+        {{ end }},
+
+      "ArisingDate": null,
+
+      "PaymentStatus":
+        {{ if paymentStatus == null }}
+          0
+        {{ else }}
+          {{ paymentStatus }}
+        {{ end }},
+
+      "Buyer": "{{ buyer.name }}",
+      "CurrencyUnit": "VND",
+      "ExchangeRate": null,
+      "ConvertedAmount": null
     }
-  ]
+  }
 }

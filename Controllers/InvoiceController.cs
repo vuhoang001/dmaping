@@ -1,20 +1,33 @@
+using InvoiceHub.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InvoiceHub.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class InvoiceController : ControllerBase
+public class InvoiceController(InvoiceFactory invoiceFactory) : ControllerBase
 {
-    
-    [HttpPost("create")]
-    public async Task<IActionResult> CreateInv([FromBody] InvoiceContext payload)
+    [HttpPost("create-invoice")]
+    public async Task<IActionResult> CreateInvoice(InvoiceContext context)
     {
-        var mapping = await System.IO.File.ReadAllTextAsync($"Mappings/{payload.Provider}.mapping.json");
-        var template = await  System.IO.File.ReadAllTextAsync($"Templates/{payload.Provider}.template.xml");
+        var service = invoiceFactory.GetInvoiceService(context.Provider);
+        var result  = await service.CreateInvoiceAsync(context);
+        return Ok(result);
+    }
 
-        var renderer = new InvoiceTemplateRenderer();
-        var xml = renderer.Render(mapping, template, payload.Data);
-        return Ok(xml);
+    [HttpPost("replace-invoice")]
+    public async Task<IActionResult> ReplaceInvoice(InvoiceContext context)
+    {
+        var servive = invoiceFactory.GetInvoiceService(context.Provider);
+        var result  = await servive.ReplaceInvoiceAsync(context);
+        return Ok(result);
+    }
+
+    [HttpPost("adjust-invoice")]
+    public async Task<IActionResult> AdjustInvoice(InvoiceContext context)
+    {
+        var service = invoiceFactory.GetInvoiceService(context.Provider);
+        var result  = await service.AdjustInvoiceAsync(context);
+        return Ok(result);
     }
 }

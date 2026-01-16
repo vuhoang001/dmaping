@@ -1,3 +1,7 @@
+using InvoiceHub;
+using InvoiceHub.Interfaces;
+using InvoiceHub.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +10,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddControllers();
+builder.Services.AddScoped<InvoiceMappingEngine>();
+builder.Services.AddScoped<BkavService>();
+builder.Services.AddScoped<VnptService>();
+builder.Services.AddScoped<InvoiceFactory>();
 
 var app = builder.Build();
 

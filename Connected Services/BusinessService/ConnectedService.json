@@ -1,0 +1,47 @@
+{
+  "providerId": "Microsoft.Tools.ServiceModel.Svcutil",
+  "version": "2.1.0",
+  "ExtendedData": {
+    "inputs": [
+      "https://demottkdldg-tt78admindemo.vnpt-invoice.com.vn/businessservice.asmx?WSDL"
+    ],
+    "namespaceMappings": [
+      "*, InvoiceHub.BusinessService"
+    ],
+    "outputFile": "BusinessService.cs",
+    "references": [
+      "Microsoft.AspNetCore.OpenApi, {Microsoft.AspNetCore.OpenApi, 8.0.22}",
+      "Microsoft.CSharp, {Microsoft.CSharp, 4.0.1}",
+      "Microsoft.OpenApi, {Microsoft.OpenApi, 1.6.14}",
+      "Newtonsoft.Json, {Newtonsoft.Json, 9.0.1}",
+      "Scriban, {Scriban, 6.5.2}",
+      "Swashbuckle.AspNetCore.Swagger, {Swashbuckle.AspNetCore.Swagger, 6.6.2}",
+      "Swashbuckle.AspNetCore.SwaggerGen, {Swashbuckle.AspNetCore.SwaggerGen, 6.6.2}",
+      "Swashbuckle.AspNetCore.SwaggerUI, {Swashbuckle.AspNetCore.SwaggerUI, 6.6.2}",
+      "System.Collections, {System.Collections, 4.0.11}",
+      "System.Diagnostics.Debug, {System.Diagnostics.Debug, 4.0.11}",
+      "System.Dynamic.Runtime, {System.Dynamic.Runtime, 4.0.11}",
+      "System.Globalization, {System.Globalization, 4.0.11}",
+      "System.IO, {System.IO, 4.1.0}",
+      "System.Linq, {System.Linq, 4.1.0}",
+      "System.Linq.Expressions, {System.Linq.Expressions, 4.1.0}",
+      "System.ObjectModel, {System.ObjectModel, 4.0.12}",
+      "System.Reflection, {System.Reflection, 4.1.0}",
+      "System.Reflection.Extensions, {System.Reflection.Extensions, 4.0.1}",
+      "System.Reflection.Primitives, {System.Reflection.Primitives, 4.0.1}",
+      "System.Resources.ResourceManager, {System.Resources.ResourceManager, 4.0.1}",
+      "System.Runtime, {System.Runtime, 4.1.0}",
+      "System.Runtime.Extensions, {System.Runtime.Extensions, 4.1.0}",
+      "System.Runtime.Serialization.Primitives, {System.Runtime.Serialization.Primitives, 4.1.1}",
+      "System.Text.Encoding, {System.Text.Encoding, 4.0.11}",
+      "System.Text.Encoding.Extensions, {System.Text.Encoding.Extensions, 4.0.11}",
+      "System.Text.RegularExpressions, {System.Text.RegularExpressions, 4.1.0}",
+      "System.Threading, {System.Threading, 4.0.11}",
+      "System.Threading.Tasks, {System.Threading.Tasks, 4.0.11}",
+      "System.Xml.ReaderWriter, {System.Xml.ReaderWriter, 4.0.11}",
+      "System.Xml.XDocument, {System.Xml.XDocument, 4.0.11}"
+    ],
+    "targetFramework": "net8.0",
+    "typeReuseMode": "All"
+  }
+}

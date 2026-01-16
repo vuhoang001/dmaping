@@ -1,3 +1,49 @@
 {
-
+  "Provider": "bkav",
+  "RefKey": "7777",
+  "Data": {
+    "key": 7778,
+    "invoiceDate": "2026-01-13T03:17:38.617Z",
+    "invoiceNo": 0,
+    "amount": 21000,
+    "total": 21000,
+    "amountInWords": "Hai mươi một nghìn đồng chẵn",
+    "notes": "string",
+    "buyer": {
+      "code": "KH00001",
+      "name": "Tran Van A",
+      "taxCode": null,
+      "unitName": "string",
+      "address": "string",
+      "phone": "0989289777",
+      "bankAccount": "string",
+      "cccd": "03720300088"
+    },
+    "payment": {
+      "method": ""
+    },
+    "receiver": {
+      "type": 3,
+      "name": "string",
+      "email": "receiver@gmail.com",
+      "phone": "",
+      "address": "string"
+    },
+    "items": [
+      {
+        "code": "butbi",
+        "name": "butbi",
+        "unit": "cai",
+        "qty": 20,
+        "price": 1000,
+        "amount": 20000,
+        "vatRate": 5,
+        "vatAmount": 1000,
+        "discount": 0,
+        "otherAmount": 0,
+        "remark": "butbitnote"
+      }
+    ]
+  }
 }
+//"InvoiceNo": {{ if refKey == null }} null {{else}}{{refKey}}{{end}},

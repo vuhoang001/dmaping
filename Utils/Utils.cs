@@ -1,9 +1,8 @@
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Serialization;
-using BSECUS;
 
-namespace Invoice.Utils;
+namespace InvoiceHub.Utils;
 
 public class Utils
 {

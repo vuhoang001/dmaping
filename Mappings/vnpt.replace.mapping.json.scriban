@@ -1,6 +1,46 @@
-namespace InvoiceHub.Mappings;
-
-public class vnpt_replace_mapping_json_scriban
 {
-    
+  "key": "{{ key }}",
+    "CusCode": "{{ buyer.code }}",
+    "CusName": "{{ buyer.name }}",
+    "CusAddress": "{{ buyer.address }}",
+    "CusPhone": "{{ buyer.phone }}",
+
+    "CusTaxCode": {{ if buyer.taxCode == null }}null{{ else }}"{{ buyer.taxCode }}"{{ end }},
+    "PaymentMethod": {{ if payment.method == null }}"TM"{{ else }}"{{ payment.method }}"{{ end }},
+    "KindOfService": {{ if kindOfService == null }}null{{ else }}{{ kindOfService }}{{ end }},
+
+    "Products": {
+      "Product": [
+        {{~ for item in items ~}}
+        {
+          "Code": "{{ item.code }}",
+          "ProdName": "{{ item.name }}",
+          "ProdUnit": "{{ item.unit }}",
+          "ProdQuantity": {{ item.qty }},
+          "ProdPrice": {{ item.price }},
+          "Total": {{ if item.total == null }}0{{ else }}{{ item.total }}{{ end }},
+          "VATAmount": {{ if item.vatAmount == null }}0{{ else }}{{ item.vatAmount }}{{ end }},
+          "Amount": {{ item.amount }},
+          "VATRate": {{  if item.vatRate == null}}0{{else}}{{item.vatRate}}{{end}},
+          "Remark": "{{ item.remark }}",
+          "IsSum": {{ item.isSum ?? 0 }},
+          "LHHDTrung": {{ item.lhhdTrung ?? 3 }}
+        }{{ if !for.last }},{{ end }}
+        {{~ end ~}}
+      ]
+    },
+
+    "Total": {{ if total == null }}null{{ else }}{{ total }}{{ end }},
+    "DiscountAmount": {{ if discountAmount == null }}null{{ else }}{{ discountAmount }}{{ end }},
+    "VATRate": {{ if vatRate == null }}null{{ else }}{{ vatRate }}{{ end }},
+    "VATAmount": {{ if vatAmount == null }}null{{ else }}{{ vatAmount }}{{ end }},
+    "Amount": {{ amount ?? 0}},
+    "AmountInWords": {{ if amountInWords == null }}null{{ else }}"{{ amountInWords }}"{{ end }},
+
+    "ArisingDate": null,
+    "PaymentStatus": {{ if paymentStatus == null }}null{{ else }}{{ paymentStatus }}{{ end }},
+    "Buyer": "{{ buyer.name }}",
+    "CurrencyUnit": "VND",
+    "ExchangeRate": null,
+    "ConvertedAmount": null
 }
