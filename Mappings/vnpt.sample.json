@@ -1,54 +1,72 @@
 {
-  "key": "10",
-  "refKey": "10",
-  "invoiceDate": "2026-01-13T03:17:38.617Z",
-  "invoiceNo": 7,
-  "notes": "string",
-  "buyer": {
-    "name": "Tran Van A",
-    "taxCode": null,
-    "unitName": "string",
-    "address": "string",
-    "phone": "string",
-    "bankAccount": "string",
-    "cccd": "03720300088"
-  },
-  "payment": {
-    "method": "TM"
-  },
-  "receiver": {
-    "type": 3,
-    "name": "string",
-    "email": "vuhoang@example.com",
-    "phone": "string",
-    "address": "string"
-  },
-  "items": [
-    {
-      "name": "Bút bi",
-      "unitName": "cái",
-      "qty": 20,
-      "price": 1000,
-      "amount": 20000,
-      "taxRate": 5,
-      "taxAmount": 1000,
-      "discount": 0,
-      "otherAmount": 0,
-      "remark": "string"
+  "provider": "vnpt",
+  "refKey": "string",
+  "data": {
+    "key": "99999",
+    "invoiceDate": "2026-01-13T03:17:38.617Z",
+    "invoiceNo": 7,
+    "notes": "string",
+    "amount": 123000,
+    "buyer": {
+      "name": "Tran Van A",
+      "taxCode": null,
+      "unitName": "string",
+      "address": "string",
+      "phone": "string",
+      "bankAccount": "string",
+      "cccd": "03720300088"
     },
-    {
-      "name": "Tập vở",
-      "unitName": "quyển",
-      "qty": 50,
-      "price": 5000,
-      "amount": 250000,
-      "taxRate": 10,
-      "taxAmount": 25000,
-      "discount": 0,
-      "otherAmount": 0,
-      "remark": ""
-    }
-  ]
+    "payment": {
+      "method": "TM"
+    },
+    "receiver": {
+      "type": 3,
+      "name": "string",
+      "email": "vuhoang@example.com",
+      "phone": "string",
+      "address": "string"
+    },
+    "items": [
+      {
+        "name": "Bút bi",
+        "unitName": "cái",
+        "qty": 20,
+        "price": 1000,
+        "amount": 20000,
+        "taxRate": 5,
+        "taxAmount": 1000,
+        "discount": 0,
+        "otherAmount": 0,
+        "remark": "string"
+      },
+      {
+        "name": "Tập vở",
+        "unitName": "quyển",
+        "qty": 50,
+        "price": 5000,
+        "amount": 250000,
+        "taxRate": 10,
+        "taxAmount": 25000,
+        "discount": 0,
+        "otherAmount": 0,
+        "remark": ""
+      }
+    ]
+  }
 }
 //"VATRate": {{ if item.vatRate == null }}null{{ else }}{{ item.vatRate }}{{ end }},
 //"IsSum": {{ if item.isSum == null }}0{{ else }}{{ item.isSum }}{{ end }},
+
+{
+  "type": "vnpt",
+  "key": "foxai",
+  "value": {
+    "account": "sapadmin",
+    "acPass": "Ldg@123456",
+    "username": "sapservice",
+    "password": "Ldg@123456",
+    "pattern": "1/026",
+    "serial": "C26TLB"
+  }
+}
+

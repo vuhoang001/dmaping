@@ -15,7 +15,7 @@
         {
           "Code": "{{ item.code }}",
           "ProdName": "{{ item.name }}",
-          "ProdUnit": "{{ item.unit }}",
+          "ProdUnit": "{{ item.unitName }}",
           "ProdQuantity": {{ item.qty }},
           "ProdPrice": {{ item.price }},
           "Total": {{ if item.total == null }}0{{ else }}{{ item.total }}{{ end }},

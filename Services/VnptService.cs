@@ -1,31 +1,32 @@
 using InvoiceHub.BusinessService;
 using InvoiceHub.Dto;
 using InvoiceHub.Interfaces;
+using InvoiceHub.Models;
 using InvoiceHub.PublishService;
+using InvoiceHub.Services.InvoiceInformation;
+using InvoiceHub.Utils;
 using Newtonsoft.Json;
 
 namespace InvoiceHub.Services;
 
-public class VnptService(ILogger<VnptService> logger, IConfiguration configuration, InvoiceMappingEngine engine)
+public class VnptService(
+    ILogger<VnptService> logger,
+    InvoiceMappingEngine engine,
+    IApiKeyProvider apiKeyProvider,
+    IInvoiceInforService invoiceInforService)
     : IInvoiceService
 {
-    private readonly string _account = configuration["Vnpt:Account"] ??
-        throw new ArgumentException("Account not found in configuration");
+    private async Task<VnptInfor> GetVnptInfor()
+    {
+        var apiKey = apiKeyProvider.GetApiKey();
+        if (apiKey is null) throw new Exception();
+        var result = await invoiceInforService.GetByApiKeyAsync(apiKey, "vnpt");
 
-    private readonly string _acPass = configuration["Vnpt:AcPass"] ??
-        throw new ArgumentException("Account not found in configuration");
+        var res = JsonHelpers.Deserialize<VnptInfor>(result.Value) ?? throw new Exception();
 
-    private readonly string _username = configuration["Vnpt:Username"] ??
-        throw new ArgumentException("Account not found in configuration");
+        return res;
+    }
 
-    private readonly string _password = configuration["Vnpt:Password"] ??
-        throw new ArgumentException("Account not found in configuration");
-
-    private readonly string _pattern = configuration["Vnpt:Pattern"] ??
-        throw new ArgumentException("Account not found in configuration");
-
-    private readonly string _serial = configuration["Vnpt:Serial"] ??
-        throw new ArgumentException("Account not found in configuration");
 
     private async Task<string> TransferToPayload(string? url = null)
     {
@@ -45,13 +46,16 @@ public class VnptService(ILogger<VnptService> logger, IConfiguration configurati
         var client = new PublishServiceSoapClient(PublishServiceSoapClient.EndpointConfiguration.PublishServiceSoap);
         try
         {
-            var xml              = await TransferToPayload();
+            var xml = await TransferToPayload();
+
+            ValidateBeforeSend(payload);
+            var vnptInfo         = await GetVnptInfor();
             var plainCommandData = engine.TransformToXml(xml, payload.Data, "Invoices");
 
 
-            var result = await client.ImportInvByPatternAsync(_account, _acPass, plainCommandData,
-                                                              _username, _password, _pattern,
-                                                              _serial, 0);
+            var result = await client.ImportInvByPatternAsync(vnptInfo.Account, vnptInfo.AcPass, plainCommandData,
+                                                              vnptInfo.Username, vnptInfo.Password, vnptInfo.Pattern,
+                                                              vnptInfo.Serial, 0);
 
             logger.LogInformation(
                 "Result of create invoice: {Result}",
@@ -73,17 +77,20 @@ public class VnptService(ILogger<VnptService> logger, IConfiguration configurati
             new BusinessServiceSoapClient(BusinessServiceSoapClient.EndpointConfiguration.BusinessServiceSoap);
 
 
-        var xml              = await TransferToPayload("Mappings/vnpt.adjust.mapping.json.scriban");
+        var xml = await TransferToPayload("Mappings/vnpt.adjust.mapping.json.scriban");
+
+        ValidateBeforeSend(payload);
+        var vnptInfo = await GetVnptInfor();
+
         var plainCommandData = engine.TransformToXml(xml, payload.Data, "AdjustInv");
 
         try
         {
-
-            var result = await clientBusiness.AdjustInvoiceActionAsync(_account, _acPass,
+            var result = await clientBusiness.AdjustInvoiceActionAsync(vnptInfo.Account, vnptInfo.AcPass,
                                                                        plainCommandData,
-                                                                       _username, _password,
+                                                                       vnptInfo.Username, vnptInfo.Password,
                                                                        payload.RefKey, "",
-                                                                       0, _pattern, _serial);
+                                                                       0, vnptInfo.Pattern, vnptInfo.Serial);
 
             logger.LogInformation(
                 "Result of replace invoice: {Result}",
@@ -105,17 +112,20 @@ public class VnptService(ILogger<VnptService> logger, IConfiguration configurati
             new BusinessServiceSoapClient(BusinessServiceSoapClient.EndpointConfiguration.BusinessServiceSoap);
 
 
-        var xml              = await TransferToPayload("Mappings/vnpt.replace.mapping.json.scriban");
+        var xml = await TransferToPayload("Mappings/vnpt.replace.mapping.json.scriban");
+
+        ValidateBeforeSend(payload);
+        var vnptInfo         = await GetVnptInfor();
         var plainCommandData = engine.TransformToXml(xml, payload.Data, "ReplaceInv");
 
         try
         {
-
-            var result = await clientBusiness.ReplaceActionAssignedNoAsync(_account, _acPass,
+            var result = await clientBusiness.ReplaceActionAssignedNoAsync(vnptInfo.Account, vnptInfo.AcPass,
                                                                            plainCommandData,
-                                                                           _username, _password,
+                                                                           vnptInfo.Username, vnptInfo.Password
+                                                                           ,
                                                                            payload.RefKey, "",
-                                                                           0, _pattern, _serial);
+                                                                           0, vnptInfo.Pattern, vnptInfo.Serial);
 
             logger.LogInformation(
                 "Result of replace invoice: {Result}",
@@ -129,5 +139,11 @@ public class VnptService(ILogger<VnptService> logger, IConfiguration configurati
         }
 
         return new InvoiceResponse();
+    }
+
+    private void ValidateBeforeSend(InvoiceContext payload)
+    {
+        payload.Data["amountInWords"] =
+            Utils.Utils.NumberToText(decimal.Parse(payload.Data["amount"].ToString() ?? string.Empty));
     }
 }

@@ -2,7 +2,7 @@ using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Invoice.Extensions;
+namespace InvoiceHub.Extensions;
 
 public static class BkavEncryptHelper
 {

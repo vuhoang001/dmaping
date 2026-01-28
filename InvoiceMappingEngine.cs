@@ -84,18 +84,18 @@ public class InvoiceMappingEngine
 
         var xsiNamespace = "http://www.w3.org/2001/XMLSchema-instance";
         
-        foreach (XmlNode node in emptyNodes)
-        {
-            if (node is XmlElement element)
-            {
-                // Check if this should be nil (based on your JSON mapping logic)
-                // You can customize this logic based on your needs
-                if (ShouldBeNil(element))
-                {
-                    element.SetAttribute("nil", xsiNamespace, "true");
-                }
-            }
-        }
+        // foreach (XmlNode node in emptyNodes)
+        // {
+        //     if (node is XmlElement element)
+        //     {
+        //         // Check if this should be nil (based on your JSON mapping logic)
+        //         // You can customize this logic based on your needs
+        //         if (ShouldBeNil(element))
+        //         {
+        //             element.SetAttribute("nil", xsiNamespace, "true");
+        //         }
+        //     }
+        // }
     }
 
     private bool ShouldBeNil(XmlElement element)

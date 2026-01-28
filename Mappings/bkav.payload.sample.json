@@ -4,10 +4,8 @@
   "Data": {
     "key": 7778,
     "invoiceDate": "2026-01-13T03:17:38.617Z",
-    "invoiceNo": 0,
     "amount": 21000,
     "total": 21000,
-    "amountInWords": "Hai mươi một nghìn đồng chẵn",
     "notes": "string",
     "buyer": {
       "code": "KH00001",
@@ -47,3 +45,15 @@
   }
 }
 //"InvoiceNo": {{ if refKey == null }} null {{else}}{{refKey}}{{end}},
+
+
+{
+  "type": "bkav",
+  "key": "foxai",
+  "value": {
+    "partnerGuid": "abc-123-def-456",
+    "partnerToken": "token_xyz_789",
+    "invoiceForm": "1",
+    "invoiceSerial": "C26TAA"
+  }
+}

@@ -18,9 +18,8 @@
         "BuyerUnitName": "{{ buyer.unitName }}",
         "BuyerAddress": "{{ buyer.address }}",
         "BuyerBankAccount": "{{ buyer.bankAccount }}",
-
-        "PayMethodID":
-          {{ if payment.method == null || payment.method == "" }}
+         "PayMethodID": 
+         {{ if payment.method == null || payment.method == "" }}
             1
           {{ else }}
             {{ payment.method }}
@@ -56,8 +55,8 @@
         "CurrencyID": "VND",
         "ExchangeRate": 1.0,
 
-        "InvoiceForm": "1",
-        "InvoiceSerial": "C26TAA",
+        "InvoiceForm": "{{invoiceForm}}",
+        "InvoiceSerial": "{{invoiceSerial}}",
         "InvoiceNo": {{ if refKey == null }} null {{else}}0{{end}},
 
         "MaCuaCQT": null,

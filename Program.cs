@@ -1,6 +1,10 @@
 using InvoiceHub;
+using InvoiceHub.Data;
 using InvoiceHub.Interfaces;
+using InvoiceHub.Middleware;
 using InvoiceHub.Services;
+using InvoiceHub.Services.InvoiceInformation;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +18,16 @@ builder.Services.AddScoped<InvoiceMappingEngine>();
 builder.Services.AddScoped<BkavService>();
 builder.Services.AddScoped<VnptService>();
 builder.Services.AddScoped<InvoiceFactory>();
+builder.Services.AddScoped<IInvoiceInforService, InvoiceInforService>();
+builder.Services.AddScoped<IApiKeyProvider, ApiKeyProvider>();
+builder.Services.AddHttpContextAccessor();
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
+    throw new InvalidOperationException("Connection string" + "'DefaultConnect' not found");
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+                                                options.UseSqlServer(connectionString));
+
 
 var app = builder.Build();
 
@@ -23,6 +37,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ApiKeyMiddleware>();
 app.UseHttpsRedirection();
 
 app.MapControllers();

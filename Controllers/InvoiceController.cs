@@ -18,8 +18,8 @@ public class InvoiceController(InvoiceFactory invoiceFactory) : ControllerBase
     [HttpPost("replace-invoice")]
     public async Task<IActionResult> ReplaceInvoice(InvoiceContext context)
     {
-        var servive = invoiceFactory.GetInvoiceService(context.Provider);
-        var result  = await servive.ReplaceInvoiceAsync(context);
+        var service = invoiceFactory.GetInvoiceService(context.Provider);
+        var result  = await service.ReplaceInvoiceAsync(context);
         return Ok(result);
     }
 
